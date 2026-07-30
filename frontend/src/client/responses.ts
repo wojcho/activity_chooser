@@ -1,4 +1,4 @@
-import type Activity from "../model/activity";
+import type { RawActivity } from "../model/application-data";
 import { SessionState } from "../model/session-state";
 
 export interface CreateSessionResponse {
@@ -13,8 +13,8 @@ export interface AcceptResponse {
 
 export interface SessionResponse {
   state: SessionState;
-  filteredActivities: Activity[] | null;
-  chosenActivity: Activity | null;
+  filteredActivities: RawActivity[] | null;
+  chosenActivity: RawActivity | null;
 }
 
 export interface SessionEvent {

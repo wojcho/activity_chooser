@@ -1,5 +1,5 @@
 import RawClient from "./raw-client";
-import SessionsClient from "./session-client";
+import SessionsClient from "./sessions-client";
 
 export default class BackendClient {
   readonly sessions: SessionsClient;

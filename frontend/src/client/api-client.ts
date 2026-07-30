@@ -1,9 +1,11 @@
 import ApiError from "./api-error";
 
 export default class ApiClient {
-  constructor(
-    private readonly baseUrl: string,
-  ) {}
+  private readonly baseUrl: string;
+
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
 
   protected async get<T>(path: string): Promise<T> {
     return this.request<T>(path, {

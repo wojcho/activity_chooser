@@ -1,10 +1,10 @@
 import ApiClient from "./api-client";
-import {
+import type {
   AcceptResponse,
   CreateSessionResponse,
   SessionEvent,
   SessionResponse,
-} from "./models";
+} from "./responses";
 
 export default class SessionsClient extends ApiClient {
 
