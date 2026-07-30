@@ -5,38 +5,7 @@ import Ajv from "ajv";
 import Activity from "../model/activity";
 import Tag from "../model/tag";
 import TagCategory from "../model/tag-category";
-
-export interface ApplicationData {
-  tagCategories: Set<TagCategory>;
-  tags: Set<Tag>;
-  activities: Set<Activity>;
-}
-
-interface RawTagCategory {
-  id: string;
-  description: string;
-  iconId: string;
-}
-
-interface RawTag {
-  id: string;
-  description: string;
-  iconId: string;
-  categoryId: string;
-}
-
-interface RawActivity {
-  id: string;
-  description: string;
-  backgroundHref: string;
-  tags: string[];
-}
-
-interface RawApplicationData {
-  tagCategories: RawTagCategory[];
-  tags: RawTag[];
-  activities: RawActivity[];
-}
+import { ApplicationData, RawApplicationData } from "../model/application-data";
 
 const DATA_DIR = path.resolve(__dirname, "../../data");
 
@@ -123,3 +92,6 @@ export function importApplicationData(): ApplicationData {
 export function importWordList(): string[] {
   return readJsonFile<string[]>("wordlist.json");
 }
+
+export const applicationData: ApplicationData = importApplicationData();
+export const wordList: string[] = importWordList();

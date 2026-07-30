@@ -1,7 +1,7 @@
 import Activity from "../src/model/activity";
 import Tag from "../src/model/tag";
 import TagCategory from "../src/model/tag-category";
-import { ApplicationData } from "../src/utils/import-data";
+import { ApplicationData } from "../src/model/application-data";
 
 export function createFixtureData(): {
   applicationData: ApplicationData;

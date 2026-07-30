@@ -3,9 +3,9 @@ import { randomBytes } from "crypto";
 import Actvity from "../model/activity";
 import Tag from "../model/tag";
 import ComparisonSet from "../utils/comparison-set";
-import { ApplicationData } from "../utils/import-data";
+import { ApplicationData } from "../model/application-data";
 
-enum SessionState {
+export enum SessionState {
   /** State machine
   * At beginning state is New
   * First user confirms chosen tags with their token and state becomes PartlyClosed
@@ -53,7 +53,7 @@ function randomFromSet<T>(set: Set<T>): T {
   throw new Error("Index over set size, this should never happen");
 }
 
-class Session {
+export class Session {
   readonly id: string;
 
   readonly applicationData: ApplicationData;
@@ -219,5 +219,3 @@ class Session {
   }
 
 }
-
-export default Session;
