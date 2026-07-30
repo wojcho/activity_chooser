@@ -10,3 +10,7 @@ export interface ApplicationData {
 export function importApplicationData(): ApplicationData {
   ;
 }
+
+export function importWordList(): string[] {
+  ;
+}

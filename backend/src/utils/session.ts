@@ -1,3 +1,5 @@
+import { randomBytes } from "crypto";
+
 import Actvity from "../model/activity";
 import Tag from "../model/tag";
 import ComparisonSet from "../utils/comparison-set";
@@ -14,12 +16,25 @@ enum SessionState {
   Closed,
 }
 
-function generateRememberableId(): string {
-  ;
+function generateRememberableId(wordsAmount: number, wordsList: string[]): string {
+  const wordsListLen = wordsList.length;
+  const out: string[] = new Array(wordsAmount);
+  const bytes = randomBytes(length);
+  for (let i = 0; i < length; ++i) {
+    out[i] = wordsList[bytes[i] % wordsListLen];
+  }
+  return out.join("-");
 }
 
-function generateInnerId(): string {
-  ;
+function generateInnerId(length: number): string {
+  const baseChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const charsLen = baseChars.length;
+  const out: string[] = new Array(length);
+  const bytes = randomBytes(length);
+  for (let i = 0; i < length; ++i) {
+    out[i] = baseChars[bytes[i] % charsLen];
+  }
+  return out.join("");
 }
 
 function randomFromSet<T>(set: Set<T>): T {
@@ -76,13 +91,13 @@ class Session {
     this.chosenActivity = chosenActivity;
   }
 
-  static fromApplicationData(applicationData: ApplicationData) {
+  static fromApplicationData(applicationData: ApplicationData, wordList: string[]) {
     return new Session(
-      generateInnerId(),
+      generateInnerId(16),
       applicationData,
       SessionState.New,
-      generateRememberableId(),
-      generateRememberableId(),
+      generateRememberableId(Math.floor(Math.random() * 4), wordList),
+      generateRememberableId(Math.floor(Math.random() * 4), wordList),
       null,
       null,
       null,
@@ -168,3 +183,7 @@ class Session {
 }
 
 export default Session;
+function importWordList() {
+  throw new Error("Function not implemented.");
+}
+
