@@ -1,4 +1,4 @@
-import Session from "../src/utils/session";
+import { Session } from "../src/utils/session";
 import { createFixtureData } from "./fixtures";
 
 describe("Session", () => {

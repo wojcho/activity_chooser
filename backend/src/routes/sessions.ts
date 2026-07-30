@@ -148,7 +148,9 @@ router.get(
 
     res.json({
       state: session.state,
-      filteredActivities: session.filteredActivities,
+      filteredActivities: session.filteredActivities
+        ? [...session.filteredActivities]
+        : null,
       chosenActivity: session.chosenActivity,
     });
   }

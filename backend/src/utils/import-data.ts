@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import Ajv from "ajv";
+import Ajv2020 from "ajv/dist/2020";
 
 import Activity from "../model/activity";
 import Tag from "../model/tag";
@@ -18,7 +18,7 @@ export function importApplicationData(): ApplicationData {
   const schema = readJsonFile<Object>("categories-tags-activities-schema.json");
   const raw = readJsonFile<RawApplicationData>("data.json");
 
-  const ajv = new Ajv();
+  const ajv = new Ajv2020();
   const validate = ajv.compile(schema);
 
   if (!validate(raw)) {
