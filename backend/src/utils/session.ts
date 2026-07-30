@@ -19,8 +19,8 @@ enum SessionState {
 function generateRememberableId(wordsAmount: number, wordsList: string[]): string {
   const wordsListLen = wordsList.length;
   const out: string[] = new Array(wordsAmount);
-  const bytes = randomBytes(length);
-  for (let i = 0; i < length; ++i) {
+  const bytes = randomBytes(wordsAmount);
+  for (let i = 0; i < wordsAmount; ++i) {
     out[i] = wordsList[bytes[i] % wordsListLen];
   }
   return out.join("-");
