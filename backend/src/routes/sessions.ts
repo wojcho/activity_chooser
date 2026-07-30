@@ -157,6 +157,8 @@ router.get(
 );
 
 // GET /sessions/:sessionId/events
+// Server-Sent Events, notifying subscribers when there is accept on session of sessionId
+// notification message contains number of new state from enum SessionState after change caused by accept
 router.get(
   "/sessions/:sessionId/events",
   (req: Request, res: Response) => {
