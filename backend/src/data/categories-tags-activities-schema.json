@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/activity-schema.json",
+  "title": "Activity Data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "tagCategories",
+    "tags",
+    "activities"
+  ],
+  "properties": {
+    "tagCategories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tagCategory"
+      },
+      "uniqueItems": true
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tag"
+      },
+      "uniqueItems": true
+    },
+    "activities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/activity"
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "tagCategory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "iconId"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "iconId": {
+          "type": "string"
+        }
+      }
+    },
+    "tag": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "iconId",
+        "categoryId"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "iconId": {
+          "type": "string"
+        },
+        "categoryId": {
+          "type": "string",
+          "description": "References tagCategories[].id"
+        }
+      }
+    },
+    "activity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "backgroundHref",
+        "tags"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "backgroundHref": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Array of tag IDs.",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}
+

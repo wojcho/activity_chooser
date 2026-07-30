@@ -1,0 +1,34 @@
+{
+  "tagCategories": [
+    {
+      "id": "sports",
+      "description": "Sports",
+      "iconId": "sports"
+    }
+  ],
+  "tags": [
+    {
+      "id": "football",
+      "description": "Football",
+      "iconId": "football",
+      "categoryId": "sports"
+    },
+    {
+      "id": "outdoor",
+      "description": "Outdoor",
+      "iconId": "outdoor",
+      "categoryId": "sports"
+    }
+  ],
+  "activities": [
+    {
+      "id": "play-football",
+      "description": "Play football with friends",
+      "backgroundHref": "/images/football.jpg",
+      "tags": [
+        "football",
+        "outdoor"
+      ]
+    }
+  ]
+}
