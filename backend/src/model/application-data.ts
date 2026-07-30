@@ -33,3 +33,40 @@ export interface RawApplicationData {
   tags: RawTag[];
   activities: RawActivity[];
 }
+
+export function rawActivitiesToActivities(
+  rawActivities: RawActivity[],
+  tags: Tag[],
+): Actvity[] {
+  const tagMap = new Map(
+    tags.map(tag => [tag.id, tag]),
+  );
+
+  return rawActivities.map(rawActivity => ({
+    id: rawActivity.id,
+    description: rawActivity.description,
+    backgroundHref: rawActivity.backgroundHref,
+    tags: new Set(
+      rawActivity.tags.map(tagId => {
+        const tag = tagMap.get(tagId);
+
+        if (!tag) {
+          throw new Error(`Unknown tag id: ${tagId}`);
+        }
+
+        return tag;
+      }),
+    ),
+  }));
+}
+
+export function activitiesToRawActivities(
+  activities: Actvity[],
+): RawActivity[] {
+  return activities.map(activity => ({
+    id: activity.id,
+    description: activity.description,
+    backgroundHref: activity.backgroundHref,
+    tags: [...activity.tags].map(tag => tag.id),
+  }));
+}

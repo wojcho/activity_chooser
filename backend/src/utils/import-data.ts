@@ -93,5 +93,6 @@ export function importWordList(): string[] {
   return readJsonFile<string[]>("wordlist.json");
 }
 
+export const rawApplicationData: RawApplicationData = readJsonFile<RawApplicationData>("data.json");
 export const applicationData: ApplicationData = importApplicationData();
 export const wordList: string[] = importWordList();

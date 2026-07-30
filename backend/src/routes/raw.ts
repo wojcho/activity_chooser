@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { applicationData } from "../utils/import-data";
+import { rawApplicationData } from "../utils/import-data";
 
 const router = Router();
 
 router.get("/raw", (_req, res) => {
-  res.status(200).json(applicationData);
+  res.status(200).json(rawApplicationData);
 });
 
 export default router;

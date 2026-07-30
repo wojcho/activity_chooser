@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import { applicationData, wordList } from "../utils/import-data";
 import SessionsHolder from "../utils/sessions-holder";
 import Tag from "../model/tag";
+import { activitiesToRawActivities } from "../model/application-data";
 
 const router = Router();
 
@@ -120,8 +121,8 @@ router.post(
 // TODO get { state: SessionState, filteredActivities: Actvity[] | null, chosenActivity: Actvity | null }, taking sessionId: string
 // {
 //   state: SessionState;
-//   filteredActivities: Activity[];
-//   chosenActivity: Activity;
+//   filteredActivities: RawActivity[];
+//   chosenActivity: RawActivity;
 // }
 // |
 // {
@@ -131,12 +132,14 @@ router.get(
   "/sessions/:sessionId",
   (req: Request, res: Response) => {
     const { sessionId } = req.params;
-    if (Array.isArray(sessionId) || !(typeof sessionId === "string")) {
+
+    if (Array.isArray(sessionId) || typeof sessionId !== "string") {
       res.status(400).json({
         error: "Only one session identifier should be provided",
       });
       return;
     }
+
     const session = sessionsHolder.getSession(sessionId);
 
     if (!session) {
@@ -149,11 +152,13 @@ router.get(
     res.json({
       state: session.state,
       filteredActivities: session.filteredActivities
-        ? [...session.filteredActivities]
+        ? activitiesToRawActivities([...session.filteredActivities])
         : null,
-      chosenActivity: session.chosenActivity,
+      chosenActivity: session.chosenActivity
+        ? activitiesToRawActivities([session.chosenActivity])[0]
+        : null,
     });
-  }
+  },
 );
 
 // GET /sessions/:sessionId/events
