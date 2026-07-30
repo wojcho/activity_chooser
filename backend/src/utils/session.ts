@@ -183,7 +183,3 @@ class Session {
 }
 
 export default Session;
-function importWordList() {
-  throw new Error("Function not implemented.");
-}
-

@@ -1,4 +1,5 @@
 import Actvity from "../model/activity";
+import Tag from "../model/tag";
 import TagCategory from "../model/tag-category";
 
 export interface ApplicationData {
