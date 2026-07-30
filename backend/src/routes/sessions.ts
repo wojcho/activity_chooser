@@ -156,4 +156,48 @@ router.get(
   }
 );
 
+// GET /sessions/:sessionId/events
+router.get(
+  "/sessions/:sessionId/events",
+  (req: Request, res: Response) => {
+    const { sessionId } = req.params;
+    if (Array.isArray(sessionId) || !(typeof sessionId === "string")) {
+      res.status(400).json({
+        error: "Only one session identifier should be provided",
+      });
+      return;
+    }
+    const session = sessionsHolder.getSession(sessionId);
+
+    if (!session) {
+      res.status(404).json({
+        error: "Session not found",
+      });
+      return;
+    }
+
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+
+    res.flushHeaders?.();
+
+    const unsubscribe = sessionsHolder.subscribe(
+      sessionId,
+      (updatedSession) => {
+        res.write(
+          `data: ${JSON.stringify({
+            state: updatedSession.state,
+          })}\n\n`,
+        );
+      },
+    );
+
+    req.on("close", () => {
+      unsubscribe();
+      res.end();
+    });
+  },
+);
+
 export default router;
