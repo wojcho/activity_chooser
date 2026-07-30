@@ -80,6 +80,9 @@ class Session {
     filteredActivities: Set<Actvity> | null,
     chosenActivity: Actvity | null,
   ) {
+    if (aToken === bToken) {
+      throw new Error("Session tokens have to be unique");
+    }
     this.id = id;
     this.applicationData = applicationData;
     this.state = state;
@@ -92,12 +95,29 @@ class Session {
   }
 
   static fromApplicationData(applicationData: ApplicationData, wordList: string[]) {
+    let aToken = generateRememberableId(
+      Math.floor(Math.random() * 3) + 1,
+      wordList
+    );
+
+    let bToken = generateRememberableId(
+      Math.floor(Math.random() * 3) + 1,
+      wordList
+    );
+
+    while (bToken === aToken) {
+      bToken = generateRememberableId(
+        Math.floor(Math.random() * 3) + 1,
+        wordList
+      );
+    }
+
     return new Session(
       generateInnerId(16),
       applicationData,
       SessionState.New,
-      generateRememberableId(Math.floor(Math.random() * 4), wordList),
-      generateRememberableId(Math.floor(Math.random() * 4), wordList),
+      aToken,
+      bToken,
       null,
       null,
       null,
@@ -113,9 +133,11 @@ class Session {
       if (this.aToken === token) {
         aComparisonSet = comparison;
         bComparisonSet = null;
-      } else {
+      } else if (this.bToken === token) {
         aComparisonSet = null;
         bComparisonSet = comparison;
+      } else {
+        throw new Error("Unrecognized token");
       }
       return new Session(
         this.id,
@@ -133,31 +155,47 @@ class Session {
       let aComparisonSet: ComparisonSet;
       let bComparisonSet: ComparisonSet;
       if (this.aToken === token) {
-        if (!this.aComparisonSet) {
+        if (this.bComparisonSet === null || !(this.bComparisonSet instanceof ComparisonSet)) {
+          throw new Error("Wrong state, earlier comparison set should be provided in PartlyClosed state");
+        }
+        aComparisonSet = comparison;
+        bComparisonSet = this.bComparisonSet;
+      } else if (this.bToken === token) {
+        if (this.aComparisonSet === null || !(this.aComparisonSet instanceof ComparisonSet)) {
           throw new Error("Wrong state, earlier comparison set should be provided in PartlyClosed state");
         }
         aComparisonSet = this.aComparisonSet;
         bComparisonSet = comparison;
       } else {
-        if (!this.bComparisonSet) {
-          throw new Error("Wrong state, earlier comparison set should be provided in PartlyClosed state");
-        }
-        aComparisonSet = comparison;
-        bComparisonSet = this.bComparisonSet;
+        throw new Error("Unrecognized token");
       }
       const filteredActivities = Session.prepareFilteredActivities(this.applicationData, aComparisonSet, bComparisonSet);
-      const chosenActivity: Actvity = randomFromSet(filteredActivities);
-      return new Session(
-        this.id,
-        this.applicationData,
-        SessionState.Closed,
-        this.aToken,
-        this.bToken,
-        aComparisonSet,
-        bComparisonSet,
-        filteredActivities,
-        chosenActivity,
-      );
+      try {
+        const chosenActivity: Actvity = randomFromSet(filteredActivities);
+        return new Session(
+          this.id,
+          this.applicationData,
+          SessionState.Closed,
+          this.aToken,
+          this.bToken,
+          aComparisonSet,
+          bComparisonSet,
+          filteredActivities,
+          chosenActivity,
+        );
+      } catch {
+        return new Session(
+          this.id,
+          this.applicationData,
+          SessionState.Closed,
+          this.aToken,
+          this.bToken,
+          aComparisonSet,
+          bComparisonSet,
+          new Set(),
+          null,
+        );
+      }
     } else {
       throw new Error("In current session state, there cannot be acceptance");
     }
