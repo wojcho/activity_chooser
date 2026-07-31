@@ -1,4 +1,6 @@
+import { Button, Container, Paper, Stack, Text, Title } from "@mantine/core";
 import { useNavigate } from "react-router";
+import { PlusIcon } from "@phosphor-icons/react";
 import { useBackend } from "../client/BackendContext";
 
 export default function HomePage() {
@@ -6,19 +8,30 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   const handleCreateSession = async () => {
-    const { sessionId, aToken, bToken } = await backend.sessions.createSession();
+    const { sessionId, aToken, bToken } =
+      await backend.sessions.createSession();
 
     navigate(`/new-session/${sessionId}/${aToken}/${bToken}`);
   };
 
   return (
-    <section id="center">
-      <h1>Main page</h1>
-      <p>Welcome!</p>
+    <Container size="sm" py="xl">
+      <Paper shadow="sm" radius="md" p="xl">
+        <Stack>
+          <Title order={1}>Activity Picker</Title>
 
-      <button onClick={handleCreateSession}>
-        Create New Session
-      </button>
-    </section>
+          <Text c="dimmed">
+            Create a session and invite another participant
+          </Text>
+
+          <Button
+            leftSection={<PlusIcon />}
+            onClick={handleCreateSession}
+          >
+            Create session
+          </Button>
+        </Stack>
+      </Paper>
+    </Container>
   );
 }

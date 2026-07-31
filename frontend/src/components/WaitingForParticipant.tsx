@@ -1,3 +1,13 @@
+import {
+  Container,
+  Loader,
+  Paper,
+  Progress,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
+
 type Props = {
   acceptedCount: number;
 };
@@ -6,16 +16,27 @@ export default function WaitingForParticipant({
   acceptedCount,
 }: Props) {
   return (
-    <section id="center">
-      <h1>Waiting...</h1>
+    <Container size="sm" py="xl">
+      <Paper p="xl" shadow="sm" radius="md">
+        <Stack align="center">
+          <Loader />
 
-      <p>
-        Waiting for the other participant to accept.
-      </p>
+          <Title order={2}>Waiting for participant</Title>
 
-      <p>
-        Accepted: {acceptedCount} / 2
-      </p>
-    </section>
+          <Text c="dimmed" ta="center">
+            Waiting for the other participant to submit their choices
+          </Text>
+
+          <Progress
+            value={(acceptedCount / 2) * 100}
+            w="100%"
+          />
+
+          <Text fw={500}>
+            {acceptedCount} of 2 participants ready
+          </Text>
+        </Stack>
+      </Paper>
+    </Container>
   );
 }

@@ -1,3 +1,14 @@
+import {
+  Button,
+  Checkbox,
+  Container,
+  Group,
+  Paper,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
+import { CheckIcon } from "@phosphor-icons/react";
 import type { ApplicationData } from "../model/application-data";
 
 type Props = {
@@ -19,38 +30,57 @@ export default function TagSelection({
   const tags = [...applicationData.tags];
 
   return (
-    <section id="center">
-      <h1>Select allowed tags</h1>
+    <Container size="md" py="xl">
+      <Stack>
+        <Paper shadow="sm" radius="md" p="xl">
+          <Stack>
+            <Title order={1}>Choose your preferences</Title>
 
-      {categories.map(category => (
-        <div key={category.id}>
-          <h2>{category.description}</h2>
+            <Text c="dimmed">
+              Select every tag that is acceptable for you. Only activities
+              matching both participants' selections will be considered.
+            </Text>
+          </Stack>
+        </Paper>
 
-          {tags
-            .filter(tag => tag.category.id === category.id)
-            .map(tag => (
-              <label
-                key={tag.id}
-                style={{ display: "block" }}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedTags.has(tag.id)}
-                  onChange={() => onToggleTag(tag.id)}
-                />
+        {categories.map(category => (
+          <Paper
+            key={category.id}
+            withBorder
+            radius="md"
+            p="lg"
+          >
+            <Stack gap="sm">
+              <Title order={3}>{category.description}</Title>
 
-                {tag.description}
-              </label>
-            ))}
-        </div>
-      ))}
+              {tags
+                .filter(tag => tag.category.id === category.id)
+                .map(tag => (
+                  <Checkbox
+                    key={tag.id}
+                    label={tag.description}
+                    checked={selectedTags.has(tag.id)}
+                    onChange={() => onToggleTag(tag.id)}
+                  />
+                ))}
+            </Stack>
+          </Paper>
+        ))}
 
-      <button
-        onClick={onAccept}
-        disabled={isSubmitting}
-      >
-        Accept
-      </button>
-    </section>
+        <Group justify="space-between">
+          <Text size="sm" c="dimmed">
+            {selectedTags.size} tag{selectedTags.size === 1 ? "" : "s"} selected
+          </Text>
+
+          <Button
+            onClick={onAccept}
+            loading={isSubmitting}
+            leftSection={<CheckIcon />}
+          >
+            Accept
+          </Button>
+        </Group>
+      </Stack>
+    </Container>
   );
 }

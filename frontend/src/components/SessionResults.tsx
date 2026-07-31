@@ -1,3 +1,14 @@
+import {
+  Alert,
+  Container,
+  List,
+  Paper,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
+import { CheckIcon, ConfettiIcon } from "@phosphor-icons/react";
 import type { RawActivity } from "../model/application-data";
 
 type Props = {
@@ -10,24 +21,44 @@ export default function SessionResults({
   chosenActivity,
 }: Props) {
   return (
-    <section id="center">
-      <h1>Available activities</h1>
+    <Container size="md" py="xl">
+      <Stack>
+        <Paper p="xl" shadow="sm" radius="md">
+          <Stack>
+            <Title order={2}>Matching activities</Title>
 
-      <ul>
-        {filteredActivities?.map(activity => (
-          <li key={activity.id}>
-            {activity.description}
-          </li>
-        ))}
-      </ul>
+            {filteredActivities?.length ? (
+              <List
+                spacing="sm"
+                icon={
+                  <CheckIcon />
+                }
+              >
+                {filteredActivities.map(activity => (
+                  <List.Item key={activity.id}>
+                    {activity.description}
+                  </List.Item>
+                ))}
+              </List>
+            ) : (
+              <Text c="dimmed">
+                No matching activities were found.
+              </Text>
+            )}
+          </Stack>
+        </Paper>
 
-      {chosenActivity && (
-        <>
-          <h2>Chosen activity</h2>
-
-          <p>{chosenActivity.description}</p>
-        </>
-      )}
-    </section>
+        {chosenActivity && (
+          <Alert
+            color="teal"
+            variant="light"
+            icon={<ConfettiIcon />}
+            title="Chosen activity"
+          >
+            {chosenActivity.description}
+          </Alert>
+        )}
+      </Stack>
+    </Container>
   );
 }

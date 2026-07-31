@@ -6,6 +6,8 @@ import TagSelection from "./TagSelection";
 import WaitingForParticipant from "./WaitingForParticipant";
 import SessionResults from "./SessionResults";
 
+import { Center, Loader } from "@mantine/core";
+
 export default function SessionPage() {
   const { sessionId, userToken } = useParams();
   const backend = useBackend();
@@ -114,7 +116,11 @@ export default function SessionPage() {
 
   if (!hasUserAccepted) {
     if (!applicationData) {
-      return <section id="center">Loading...</section>;
+      return (
+        <Center h="100vh">
+          <Loader size="lg" />
+        </Center>
+      );
     }
 
     return (
