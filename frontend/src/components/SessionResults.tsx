@@ -221,8 +221,11 @@ export default function SessionResults({
   filteredActivities,
   chosenActivity,
 }: Props) {
-  const [showRoulette, setShowRoulette] = useState(false);
-  const [played, setPlayed] = useState(false);
+  const [showRoulette, setShowRoulette] = useState(
+    !!chosenActivity && !!filteredActivities?.length
+  );
+
+  const [played, setPlayed] = useState(showRoulette);
 
   useEffect(() => {
     if (
