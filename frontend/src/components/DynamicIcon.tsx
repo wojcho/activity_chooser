@@ -7,7 +7,7 @@ export default function DynamicIcon({
 }) {
   const Icon = P[iconId as keyof typeof P];
 
-  if (!Icon || typeof Icon !== "function") {
+  if (!Icon) {
     return null;
   }
 
