@@ -147,6 +147,46 @@ export default function SessionPage() {
     });
   }
 
+  function selectAllTags() {
+    if (!applicationData) return;
+
+    setSelectedTags(
+      new Set([...applicationData.tags].map(tag => tag.id))
+    );
+  }
+
+  function clearAllTags() {
+    setSelectedTags(new Set());
+  }
+
+  function selectCategory(categoryId: string) {
+    if (!applicationData) return;
+
+    setSelectedTags(previous => {
+      const next = new Set(previous);
+
+      [...applicationData.tags]
+        .filter(tag => tag.category.id === categoryId)
+        .forEach(tag => next.add(tag.id));
+
+      return next;
+    });
+  }
+
+  function clearCategory(categoryId: string) {
+    if (!applicationData) return;
+
+    setSelectedTags(previous => {
+      const next = new Set(previous);
+
+      [...applicationData.tags]
+        .filter(tag => tag.category.id === categoryId)
+        .forEach(tag => next.delete(tag.id));
+
+      return next;
+    });
+  }
+
   const hasUserAccepted =
     !!userToken &&
     acceptedTokens?.includes(userToken);
@@ -164,10 +204,14 @@ export default function SessionPage() {
     }
 
     return (
-      <TagSelection
+     <TagSelection
         applicationData={applicationData}
         selectedTags={selectedTags}
         onToggleTag={toggleTag}
+        onSelectAll={selectAllTags}
+        onClearAll={clearAllTags}
+        onSelectCategory={selectCategory}
+        onClearCategory={clearCategory}
         onAccept={accept}
         isSubmitting={isSubmitting}
       />
