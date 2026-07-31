@@ -1,7 +1,9 @@
 import { useParams } from "react-router";
+import { useBackend } from "../client/BackendContext";
 
 export default function SessionPage() {
   const { sessionId, userToken } = useParams();
+  const backend = useBackend();
 
   return (
     <section id="center">

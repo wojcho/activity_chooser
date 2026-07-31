@@ -51,4 +51,3 @@ export default class SessionsClient extends ApiClient {
     return () => source.close();
   }
 }
-

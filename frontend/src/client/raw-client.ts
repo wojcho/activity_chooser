@@ -67,7 +67,6 @@ export function rawApplicationDataToApplicationData(raw: RawApplicationData): Ap
   };
 }
 
-
 export default class RawClient extends ApiClient {
 
   async getRawData() {

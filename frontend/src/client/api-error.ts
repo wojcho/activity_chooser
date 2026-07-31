@@ -10,4 +10,3 @@ export default class ApiError extends Error {
     this.status = status;
   }
 }
-
