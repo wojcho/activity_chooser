@@ -52,7 +52,7 @@ describe("SSE", () => {
       });
 
     await expect(notification).resolves.toEqual({
-      state: 1,
+      acceptedTokens: [session.aToken],
     });
   });
 });

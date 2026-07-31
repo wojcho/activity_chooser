@@ -5,17 +5,6 @@ import Tag from "../model/tag";
 import ComparisonSet from "../utils/comparison-set";
 import { ApplicationData } from "../model/application-data";
 
-export enum SessionState {
-  /** State machine
-  * At beginning state is New
-  * First user confirms chosen tags with their token and state becomes PartlyClosed
-  * Another user confirms chosen tags with their token and state becomes Closed
-  */
-  New,
-  PartlyClosed,
-  Closed,
-}
-
 function generateRememberableId(wordsAmount: number, wordsList: string[]): string {
   const wordsListLen = wordsList.length;
   const out: string[] = new Array(wordsAmount);
@@ -58,7 +47,7 @@ export class Session {
 
   readonly applicationData: ApplicationData;
 
-  readonly state: SessionState;
+  readonly acceptedTokens: string[];
 
   readonly aToken: string;
   readonly bToken: string;
@@ -72,7 +61,7 @@ export class Session {
   constructor(
     id: string,
     applicationData: ApplicationData,
-    state: SessionState,
+    acceptedTokens: string[],
     aToken: string,
     bToken: string,
     aComparisonSet: ComparisonSet | null,
@@ -85,7 +74,7 @@ export class Session {
     }
     this.id = id;
     this.applicationData = applicationData;
-    this.state = state;
+    this.acceptedTokens = [...acceptedTokens];
     this.aToken = aToken;
     this.bToken = bToken;
     this.aComparisonSet = aComparisonSet;
@@ -115,7 +104,7 @@ export class Session {
     return new Session(
       generateInnerId(16),
       applicationData,
-      SessionState.New,
+      [],
       aToken,
       bToken,
       null,
@@ -125,8 +114,22 @@ export class Session {
     );
   }
 
+  private hasAccepted(token: string): boolean {
+    return this.acceptedTokens.includes(token);
+  }
+
+  private isClosed(): boolean {
+    return this.acceptedTokens.length === 2;
+  }
+
   accept(token: string, tags: Set<Tag>): Session {
-    if (this.state === SessionState.New) {
+    if (token !== this.aToken && token !== this.bToken) {
+      throw new Error("Unrecognized token");
+    }
+    if (this.hasAccepted(token)) {
+      throw new Error("This token has already accepted");
+    }
+    if (this.acceptedTokens.length === 0) {
       const comparison = ComparisonSet.fromSets(this.applicationData.tags, tags);
       let aComparisonSet;
       let bComparisonSet;
@@ -142,7 +145,7 @@ export class Session {
       return new Session(
         this.id,
         this.applicationData,
-        SessionState.PartlyClosed,
+        [token],
         this.aToken,
         this.bToken,
         aComparisonSet,
@@ -150,19 +153,19 @@ export class Session {
         null,
         null,
       );
-    } else if (this.state == SessionState.PartlyClosed) {
+    } else if (this.acceptedTokens.length === 1) {
       const comparison = ComparisonSet.fromSets(this.applicationData.tags, tags);
       let aComparisonSet: ComparisonSet;
       let bComparisonSet: ComparisonSet;
       if (this.aToken === token) {
         if (this.bComparisonSet === null || !(this.bComparisonSet instanceof ComparisonSet)) {
-          throw new Error("Wrong state, earlier comparison set should be provided in PartlyClosed state");
+          throw new Error("Wrong state, earlier comparison set should be provided after one token was already accepted");
         }
         aComparisonSet = comparison;
         bComparisonSet = this.bComparisonSet;
       } else if (this.bToken === token) {
         if (this.aComparisonSet === null || !(this.aComparisonSet instanceof ComparisonSet)) {
-          throw new Error("Wrong state, earlier comparison set should be provided in PartlyClosed state");
+          throw new Error("Wrong state, earlier comparison set should be provided after one token was already accepted");
         }
         aComparisonSet = this.aComparisonSet;
         bComparisonSet = comparison;
@@ -175,7 +178,7 @@ export class Session {
         return new Session(
           this.id,
           this.applicationData,
-          SessionState.Closed,
+          [...this.acceptedTokens, token],
           this.aToken,
           this.bToken,
           aComparisonSet,
@@ -187,7 +190,7 @@ export class Session {
         return new Session(
           this.id,
           this.applicationData,
-          SessionState.Closed,
+          [...this.acceptedTokens, token],
           this.aToken,
           this.bToken,
           aComparisonSet,

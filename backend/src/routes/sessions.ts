@@ -43,9 +43,9 @@ router.post("/sessions", (_req: Request, res: Response) => {
 });
 
 // POST /sessions/:sessionId/accept
-// accept in session, taking sessionId: string, token: string, tagIds: string[], output new SessionState
+// accept in session, taking sessionId: string, token: string, tagIds: string[], output new acceptedTokens: string[]
 // {
-//   state: SessionState
+//   acceptedTokens: string[]
 // }
 // |
 // {
@@ -106,7 +106,7 @@ router.post(
       }
 
       res.json({
-        state: session.state,
+        acceptedTokens: session.acceptedTokens,
       });
 
     } catch (err) {
@@ -118,9 +118,9 @@ router.post(
 );
 
 // GET /sessions/:sessionId
-// TODO get { state: SessionState, filteredActivities: Actvity[] | null, chosenActivity: Actvity | null }, taking sessionId: string
+// TODO get { acceptedTokens: string[], filteredActivities: Actvity[] | null, chosenActivity: Actvity | null }, taking sessionId: string
 // {
-//   state: SessionState;
+//   acceptedTokens: string[];
 //   filteredActivities: RawActivity[];
 //   chosenActivity: RawActivity;
 // }
@@ -150,7 +150,7 @@ router.get(
     }
 
     res.json({
-      state: session.state,
+      acceptedTokens: session.acceptedTokens,
       filteredActivities: session.filteredActivities
         ? activitiesToRawActivities([...session.filteredActivities])
         : null,
@@ -163,7 +163,7 @@ router.get(
 
 // GET /sessions/:sessionId/events
 // Server-Sent Events, notifying subscribers when there is accept on session of sessionId
-// notification message contains number of new state from enum SessionState after change caused by accept
+// notification message contains new acceptedTokens after change caused by accept
 router.get(
   "/sessions/:sessionId/events",
   (req: Request, res: Response) => {
@@ -194,7 +194,7 @@ router.get(
       (updatedSession) => {
         res.write(
           `data: ${JSON.stringify({
-            state: updatedSession.state,
+            acceptedTokens: updatedSession.acceptedTokens,
           })}\n\n`,
         );
       },

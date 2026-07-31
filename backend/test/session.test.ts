@@ -96,7 +96,7 @@ describe("Session", () => {
     it("does not allow accepting when in a closed session", () => {
       const session = Session.fromApplicationData(
         applicationData,
-        ["aaa"]
+        ["a", "b", "c", "d"]
       );
 
       const closed = session
@@ -110,7 +110,7 @@ describe("Session", () => {
           new Set([tags.football])
         )
       ).toThrow(
-        "In current session state, there cannot be acceptance"
+        "This token has already accepted"
       );
     });
 

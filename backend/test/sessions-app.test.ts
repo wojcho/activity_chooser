@@ -36,7 +36,7 @@ describe("Sessions API", () => {
       };
     }
 
-    it("accepts first user and moves session to PartlyClosed", async () => {
+    it("accepts first user and moves session to contain accepted token", async () => {
       const session = await createSession();
 
       const response = await request(app)
@@ -49,7 +49,7 @@ describe("Sessions API", () => {
       expect(response.status).toBe(200);
 
       expect(response.body).toEqual({
-        state: 1, // SessionState.PartlyClosed
+        acceptedTokens: [session.aToken],
       });
     });
 
@@ -73,7 +73,7 @@ describe("Sessions API", () => {
       expect(response.status).toBe(200);
 
       expect(response.body).toEqual({
-        state: 2, // SessionState.Closed
+        acceptedTokens: [session.aToken, session.bToken],
       });
     });
 
@@ -141,7 +141,7 @@ describe("Sessions API", () => {
       expect(response.status).toBe(200);
 
       expect(response.body).toEqual({
-        state: 0, // SessionState.New
+        acceptedTokens: [],
         filteredActivities: null,
         chosenActivity: null,
       });
@@ -183,7 +183,7 @@ describe("Sessions API", () => {
 
       expect(response.status).toBe(200);
 
-      expect(response.body.state).toBe(2);
+      expect(response.body.acceptedTokens).toStrictEqual([session.aToken, session.bToken]);
       expect(response.body.filteredActivities).toBeDefined();
 
       expect(response.body.chosenActivity).toEqual(
