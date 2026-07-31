@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useParams, type Session } from "react-router";
+import { useParams } from "react-router";
 import { useBackend } from "../client/BackendContext";
 import { rawActivitiesToActivities, type ApplicationData, type RawActivity } from "../model/application-data";
 import TagSelection from "./TagSelection";
@@ -28,11 +28,15 @@ export default function SessionPage() {
   function setActivitiesUsingRawAndTags(sessionResponse: SessionResponse, applicationData: ApplicationData): void {
     const tagsArray = Array.from(applicationData.tags);
     const rawFilteredActivities: RawActivity[] = sessionResponse.filteredActivities;
-    const fullFilteredActivities: Actvity[] = rawActivitiesToActivities(rawFilteredActivities, tagsArray);
-    setFilteredActivities(fullFilteredActivities);
+    if (rawFilteredActivities) {
+      const fullFilteredActivities: Actvity[] = rawActivitiesToActivities(rawFilteredActivities, tagsArray);
+      setFilteredActivities(fullFilteredActivities);
+    }
     const rawChosenActivity: RawActivity = sessionResponse.chosenActivity;
-    const fullChosenActivity: Actvity = rawActivitiesToActivities([rawChosenActivity], tagsArray)[0];
-    setChosenActivity(fullChosenActivity);
+    if (rawChosenActivity) {
+      const fullChosenActivity: Actvity = rawActivitiesToActivities([rawChosenActivity], tagsArray)[0];
+      setChosenActivity(fullChosenActivity);
+    }
   }
 
   useEffect(() => {
