@@ -11,7 +11,7 @@ import {
   Title,
 } from "@mantine/core";
 import { CheckIcon, ConfettiIcon } from "@phosphor-icons/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type Activity from "../model/activity";
 import DynamicIcon from "./DynamicIcon";
 
@@ -20,12 +20,30 @@ type Props = {
   chosenActivity: Activity | null;
 };
 
+const CARD_GAP = 16;
+
+const CARD_ASPECT_RATIO = 1.65;
+const CARD_MIN_HEIGHT = 220;
+const CARD_MAX_HEIGHT = 320;
+
+function getCardHeight(width: number) {
+  return Math.min(
+    CARD_MAX_HEIGHT,
+    Math.max(
+      CARD_MIN_HEIGHT,
+      width / CARD_ASPECT_RATIO
+    )
+  );
+}
+
 function ActivityCard({
   activity,
   highlighted = false,
+  compact = false,
 }: {
   activity: Activity;
   highlighted?: boolean;
+  compact?: boolean;
 }) {
   return (
     <Card
@@ -39,10 +57,20 @@ function ActivityCard({
         backgroundPosition: "center",
         position: "relative",
         overflow: "hidden",
-        minHeight: 220,
+
+        height: "100%",
+        minHeight: compact
+          ? undefined
+          : CARD_MIN_HEIGHT,
+
+        aspectRatio: compact
+          ? undefined
+          : `${CARD_ASPECT_RATIO}`,
+
         borderColor: highlighted
           ? "var(--mantine-color-teal-4)"
           : undefined,
+
         borderWidth: highlighted ? 3 : 1,
       }}
     >
@@ -74,8 +102,10 @@ function ActivityCard({
             zIndex: 2,
             padding: "6px 14px",
             borderRadius: 999,
-            border: "2px solid var(--mantine-color-teal-4)",
-            backgroundColor: "var(--mantine-color-teal-9)",
+            border:
+              "2px solid var(--mantine-color-teal-4)",
+            backgroundColor:
+              "var(--mantine-color-teal-9)",
           }}
         >
           <Group gap="xs">
@@ -100,7 +130,9 @@ function ActivityCard({
             {activity.id}
           </Title>
 
-          <Text c="white">{activity.description}</Text>
+          <Text c="white">
+            {activity.description}
+          </Text>
         </Stack>
 
         <Group gap="xs">
@@ -109,7 +141,9 @@ function ActivityCard({
               key={tag.id}
               variant="light"
               color="gray"
-              leftSection={<DynamicIcon iconId={tag.iconId} />}
+              leftSection={
+                <DynamicIcon iconId={tag.iconId} />
+              }
             >
               {tag.id}
             </Badge>
@@ -120,10 +154,6 @@ function ActivityCard({
   );
 }
 
-const CARD_WIDTH = 360;
-const CARD_HEIGHT = 220;
-const CARD_GAP = 16;
-
 function Roulette({
   activities,
   winner,
@@ -133,12 +163,33 @@ function Roulette({
   winner: Activity;
   onFinished: () => void;
 }) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+
+  const [viewportWidth, setViewportWidth] =
+    useState(0);
+
+  const [translate, setTranslate] =
+    useState(0);
+
+  const cardHeight = getCardHeight(
+    Math.min(900, viewportWidth)
+  );
+
+  const cardWidth = Math.min(
+    360,
+    cardHeight * 0.75
+  );
+
   const sequence = useMemo(() => {
     const arr: Activity[] = [];
 
     for (let i = 0; i < 60; i++) {
       arr.push(
-        activities[Math.floor(Math.random() * activities.length)]
+        activities[
+          Math.floor(
+            Math.random() * activities.length
+          )
+        ]
       );
     }
 
@@ -147,70 +198,104 @@ function Roulette({
     return arr;
   }, [activities, winner]);
 
-  const [translate, setTranslate] = useState(0);
+  useEffect(() => {
+    if (!viewportRef.current) return;
+
+    const observer = new ResizeObserver(
+      ([entry]) => {
+        setViewportWidth(
+          entry.contentRect.width
+        );
+      }
+    );
+
+    observer.observe(viewportRef.current);
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
-    const viewportWidth = 900;
+    if (!viewportWidth || !cardWidth) return;
 
     const stop =
-      (sequence.length - 1) * (CARD_WIDTH + CARD_GAP) -
+      (sequence.length - 1) *
+        (cardWidth + CARD_GAP) -
       viewportWidth / 2 +
-      CARD_WIDTH / 2;
+      cardWidth / 2;
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         setTranslate(stop);
       });
     });
-  }, [sequence]);
+  }, [
+    sequence,
+    viewportWidth,
+    cardWidth,
+  ]);
 
   return (
     <Box
       style={{
         position: "relative",
+        width: "100%",
       }}
     >
-      {/* Center indicator */}
       <Box
         style={{
           position: "absolute",
           left: "50%",
-          top: -12,
-          transform: "translateX(-50%)",
+          top: 0,
+          transform:
+            "translateX(-50%)",
           width: 4,
-          height: 250,
-          background: "var(--mantine-color-teal-9)",
+          height: cardHeight,
+          background:
+            "var(--mantine-color-teal-9)",
           zIndex: 100,
         }}
       />
 
       <Box
+        ref={viewportRef}
         style={{
           overflow: "hidden",
-          width: 900,
+          width: "100%",
+          maxWidth: 900,
           margin: "0 auto",
+          height: cardHeight,
         }}
       >
         <Group
           wrap="nowrap"
-          gap="md"
+          gap={CARD_GAP}
           onTransitionEnd={onFinished}
           style={{
             width: "max-content",
             transform: `translateX(-${translate}px)`,
             transition:
-              "transform 5s cubic-bezier(.12,.85,.2,1)",
+              translate === 0
+                ? "none"
+                : "transform 5s cubic-bezier(.12,.85,.2,1)",
           }}
         >
-          {sequence.map((activity, index) => (
-            <Box
-              key={index}
-              w={CARD_WIDTH}
-              h={CARD_HEIGHT}
-            >
-              <ActivityCard activity={activity} />
-            </Box>
-          ))}
+          {sequence.map(
+            (activity, index) => (
+              <Box
+                key={index}
+                w={cardWidth}
+                h={cardHeight}
+                style={{
+                  flexShrink: 0,
+                }}
+              >
+                <ActivityCard
+                  activity={activity}
+                  compact
+                />
+              </Box>
+            )
+          )}
         </Group>
       </Box>
     </Box>
@@ -221,11 +306,14 @@ export default function SessionResults({
   filteredActivities,
   chosenActivity,
 }: Props) {
-  const [showRoulette, setShowRoulette] = useState(
-    !!chosenActivity && !!filteredActivities?.length
-  );
+  const [showRoulette, setShowRoulette] =
+    useState(
+      !!chosenActivity &&
+        !!filteredActivities?.length
+    );
 
-  const [played, setPlayed] = useState(showRoulette);
+  const [played, setPlayed] =
+    useState(showRoulette);
 
   useEffect(() => {
     if (
@@ -238,13 +326,21 @@ export default function SessionResults({
 
     setPlayed(true);
     setShowRoulette(true);
-  }, [played, chosenActivity, filteredActivities]);
+  }, [
+    played,
+    chosenActivity,
+    filteredActivities,
+  ]);
 
   return (
     <Container size="md" py="xl">
       <Stack>
         {chosenActivity && (
-          <Paper p="xl" shadow="sm" radius="md">
+          <Paper
+            p="xl"
+            shadow="sm"
+            radius="md"
+          >
             <Stack>
               <Title order={2}>
                 <Group gap="xs">
@@ -255,9 +351,13 @@ export default function SessionResults({
 
               {showRoulette ? (
                 <Roulette
-                  activities={filteredActivities ?? []}
+                  activities={
+                    filteredActivities ?? []
+                  }
                   winner={chosenActivity}
-                  onFinished={() => setShowRoulette(false)}
+                  onFinished={() =>
+                    setShowRoulette(false)
+                  }
                 />
               ) : (
                 <ActivityCard
@@ -269,18 +369,26 @@ export default function SessionResults({
           </Paper>
         )}
 
-        <Paper p="xl" shadow="sm" radius="md">
+        <Paper
+          p="xl"
+          shadow="sm"
+          radius="md"
+        >
           <Stack>
-            <Title order={2}>Matching activities</Title>
+            <Title order={2}>
+              Matching activities
+            </Title>
 
             {filteredActivities?.length ? (
               <Stack gap="md">
-                {filteredActivities.map((activity) => (
-                  <ActivityCard
-                    key={activity.id}
-                    activity={activity}
-                  />
-                ))}
+                {filteredActivities.map(
+                  (activity) => (
+                    <ActivityCard
+                      key={activity.id}
+                      activity={activity}
+                    />
+                  )
+                )}
               </Stack>
             ) : (
               <Text c="dimmed">
