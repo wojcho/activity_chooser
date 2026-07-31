@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     allowedHosts: [
       "localhost",
+      // "a-b-c.ngrok-free.dev",
     ],
   },
 })

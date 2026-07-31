@@ -15,6 +15,7 @@ const theme = createTheme({
 });
 
 const backend = new BackendClient("http://localhost:3000");
+// const backend = new BackendClient("https://a-b-c.ngrok-free.dev");
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
