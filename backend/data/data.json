@@ -1,34 +1,410 @@
 {
   "tagCategories": [
     {
-      "id": "sports",
-      "description": "Sports",
-      "iconId": "sports"
+      "id": "Duration",
+      "description": "How long has to be spent on an activity",
+      "iconId": "ClockClockwise"
+    },
+    {
+      "id": "Effort",
+      "description": "How much effort it costs to engage in activity",
+      "iconId": "Barbell"
+    },
+    {
+      "id": "Mood",
+      "description": "How is that activity emotionally",
+      "iconId": "Smiley"
+    },
+    {
+      "id": "Activity",
+      "description": "What that activity consists of",
+      "iconId": "MagicWand"
     }
   ],
   "tags": [
     {
-      "id": "football",
-      "description": "Football",
-      "iconId": "football",
-      "categoryId": "sports"
+      "id": "Quick",
+      "description": "Should take short time",
+      "iconId": "HourglassLow",
+      "categoryId": "Duration"
     },
     {
-      "id": "outdoor",
-      "description": "Outdoor",
-      "iconId": "outdoor",
-      "categoryId": "sports"
+      "id": "Medium Duration",
+      "description": "Can take some time",
+      "iconId": "HourglassMedium",
+      "categoryId": "Duration"
+    },
+
+    {
+      "id": "Lazy",
+      "description": "Should not take much effort",
+      "iconId": "Bed",
+      "categoryId": "Effort"
+    },
+    {
+      "id": "Medium Effort",
+      "description": "Can take some effort",
+      "iconId": "PersonSimpleThrow",
+      "categoryId": "Effort"
+    },
+
+    {
+      "id": "Game",
+      "description": "Involves playing something on some website",
+      "iconId": "GameController",
+      "categoryId": "Activity"
+    },
+    {
+      "id": "Talk",
+      "description": "Involves conversation",
+      "iconId": "Chat",
+      "categoryId": "Activity"
+    },
+    {
+      "id": "Creative",
+      "description": "Involves making something",
+      "iconId": "Palette",
+      "categoryId": "Activity"
+    },
+    {
+      "id": "Active",
+      "description": "Involves IRL activities",
+      "iconId": "PersonSimpleRun",
+      "categoryId": "Activity"
+    },
+
+    {
+      "id": "Silly",
+      "description": "Lighthearted activities",
+      "iconId": "Sun",
+      "categoryId": "Mood"
+    },
+    {
+      "id": "Deep",
+      "description": "Activities which are somehow thoughtful",
+      "iconId": "BookOpenText",
+      "categoryId": "Mood"
+    },
+    {
+      "id": "Prying",
+      "description": "Ear-reddening",
+      "iconId": "Eye",
+      "categoryId": "Mood"
+    },
+    {
+      "id": "Angsty",
+      "description": "UGH!",
+      "iconId": "SmileyAngry",
+      "categoryId": "Mood"
+    },
+    {
+      "id": "Tired",
+      "description": "Activities which help in resting",
+      "iconId": "MoonStars",
+      "categoryId": "Mood"
     }
+
   ],
   "activities": [
     {
-      "id": "play-football",
-      "description": "Play football with friends",
-      "backgroundHref": "/images/football.jpg",
-      "tags": [
-        "football",
-        "outdoor"
-      ]
+      "id": "Charades",
+      "description": "Play games on websites such as https://sketchful.io/. One person draws something and another person guesses what is being drawn.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/e/ef/What_To_Draw_Image_46.png",
+      "tags": ["Medium Duration", "Lazy", "Game", "Silly"]
+    },
+    {
+      "id": "20 Questions",
+      "description": "First choose categories, then one person invents something from that category, another person has to guess what that is by asking questions. Questions can be answered only as yes or no.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/3/35/17-01-08_20_Questions_07.jpg",
+      "tags": ["Medium Duration", "Medium Effort", "Talk", "Silly"]
+    },
+    {
+      "id": "Would You Rather",
+      "description": "Take turns asking 'Would you rather...' questions with 2 clearly different options. The other person has to choose and say why they made that choice. Switch roles.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Dichotomy.svg",
+      "tags": ["Quick", "Lazy", "Talk", "Silly"]
+    },
+    {
+      "id": "Roleplay",
+      "description": "First, choose a fictional world, theme, or a prompt. Then, pretend to be fictional characters in that setting.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Kamikiri_no_Kidan_Hair_Cutting_Yokai_Strange_Story_by_Yoshifuji_Utagawa_1868.png",
+      "tags": ["Medium Duration", "Medium Effort", "Talk", "Creative"]
+    },
+    {
+      "id": "Silly Personality Tests",
+      "description": "Find personality tests on online websites such as https://www.idrlabs.com/tests.php. Choose a test with a silly theme (for example, character test or villain test). Solve the test. Before sending results, try to guess what results would other person get. Check if you were right.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/d/df/Humility_and_arrogance.png",
+      "tags": ["Medium Duration", "Lazy", "Game", "Silly"]
+    },
+    {
+      "id": "Psychological Personality Tests",
+      "description": "Find personality tests on online websites such as https://www.idrlabs.com/tests.php. Choose a test which is more serious (for example, enneagram or big 5 inventory). Solve the test. Before sending results, try to guess what results would other person get. Check if you were right.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/7/76/MBTI%E8%AF%84%E9%87%8F%E5%9B%BE%E8%A1%A8%E6%B1%89%E5%8C%96%E7%89%88.png",
+      "tags": ["Medium Duration", "Lazy", "Game", "Deep"]
+    },
+    {
+      "id": "AI Portraits",
+      "description": "Draw another person and self using image generation https://perchance.org/ai-text-to-image-generator. Send used prompt, and generated image of both for comments. See whether you had a realistic mental image of other person.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Self_portrait_%288618889472%29.jpg",
+      "tags": ["Medium Duration", "Medium Effort", "Creative", "Prying"]
+    },
+    {
+      "id": "Questions",
+      "description": "One person asks question, another responds. Later persons switch.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/8/84/Question_Mark_Icon.png",
+      "tags": ["Talk"]
+    },
+    {
+      "id": "Light Questions",
+      "description": "One person asks question, another responds. Later persons switch. The questions have to follow a light theme. Example: 'Which is your favourite season?'",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Clouds_%26_Calm_Waters_at_Sunrise.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Silly"]
+    },
+    {
+      "id": "Deep Questions",
+      "description": "One person asks question, another responds. Later persons switch. The questions have to be about deep topics. Example: 'Which philosophical school is closest to your views?'",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Austria_-_G%C3%B6ttweig_Abbey_-_2015.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Deep"]
+    },
+    {
+      "id": "Weird Questions",
+      "description": "One person asks question, another responds. Later persons switch. The questions have to be weird and odd. Example: 'When borrowing someones shadow, is it necessary to give it back later?'",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/8/82/Amanita_muscaria_2018_G10.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Silly"]
+    },
+    {
+      "id": "Embarrassing Questions",
+      "description": "One person asks question, another responds. Later persons switch. The questions have to be embarrassing.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/b/b3/P%C3%A4ij%C3%A4nne_and_p%C3%A4ij%C3%A4tsalo.jpg",
+      "tags": ["Talk", "Prying"]
+    },
+    {
+      "id": "Lyrical Questions",
+      "description": "One person asks question, another responds. Later persons switch. The response has to be lyrics copied from a song. Example: 'What is a thought which was following you for some time?' 'Now it's time to eat soft ice cream'",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/7/7b/%E5%85%83-%E6%98%8E_%E5%AE%8B%E5%85%8B_%E8%8D%89%E6%9B%B8%E8%B2%A0%E9%83%AD%E5%A0%82%E6%88%90%E4%B8%83%E5%BE%8B%E8%A9%A9_%E5%8D%B7-Poem_on_Retirement_MET_DP204660_CRD.jpg",
+      "tags": ["Quick", "Medium Effort", "Talk", "Silly"]
+    },
+    {
+      "id": "Emoji Questions",
+      "description": "One person asks question, another responds. Later persons switch. The response has to be only emojis. Example: 'What is your mood right now?' '😴🌓🥱🌛🛌💤🍵'",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Emoji_bales_%2836765488293%29.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Silly"]
+    },
+    {
+      "id": "Futures Trade",
+      "description": "How could the future be like 10 years from now? What could be different? What could be same? Ask a question, other person has to make a prediction. Switch. Example: 'Would people still have to work?' 'Yes, but some wealthy countries might have UBI'",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Ambigram_Future_tessellation.png",
+      "tags": ["Quick", "Talk", "Deep"]
+    },
+    {
+      "id": "Questions from Wikiversity",
+      "description": "One person chooses a question from https://en.wikiversity.org/wiki/Knowing_Someone/Big_Talk, you both have to respond to it. Later who chooses switches.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/0/00/Wikiversity_home.png",
+      "tags": ["Medium Duration", "Talk", "Deep"]
+    },
+    {
+      "id": "Challenges",
+      "description": "One person gives a challenge which should be quick to do. Another shows proof of completion. Later persons switch. Example challange: find nearest blue item and send its image.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Hayatake_Torakichi_by_Utagawa_Kuniyoshi.jpg",
+      "tags": ["Quick", "Medium Effort", "Active"]
+    },
+    {
+      "id": "Interleaved Story",
+      "description": "Choose a prompt of a story from a LLM. Then, one person writes 2-3 sentences of that story. Another person has to continue in similar way. Later persons switch.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Multi_gpu_scan_line_interleave.png",
+      "tags": ["Medium Duration", "Medium Effort", "Creative"]
+    },
+    {
+      "id": "2 Normal, 1 Odd",
+      "description": "Write 3 things which happened recently. 1 of these can be weird or false, and others are normal or genuine. Other person has to guess which was odd one. Later switch.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg",
+      "tags": ["Quick", "Medium Effort", "Talk"]
+    },
+    {
+      "id": "2 Truths, 1 Lie",
+      "description": "Give 3 statements about yourself. Two are true and one is a lie. Other person guesses which is a lie, then asks a follow-up question that could expose the lie. Switch.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/9/96/Big_lie_2.svg",
+      "tags": ["Quick", "Medium Effort", "Talk"]
+    },
+    {
+      "id": "Cutting Edge",
+      "description": "What is a controversial or edgy opinion which you have?",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/0/04/Angry_sun.png",
+      "tags": ["Quick", "Lazy", "Talk", "Angsty"]
+    },
+    {
+      "id": "Images Only",
+      "description": "Next few messages which you send, have to be only images",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Castle_Square_%2822346p%29.jpg",
+      "tags": ["Quick", "Medium Effort", "Talk", "Creative"]
+    },
+    {
+      "id": "Lyrics Only",
+      "description": "Next few messages which you send, have to be only lines from lyrics of any songs",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Poem_by_Kamo_no_Ch%C5%8Dmei-Calligraphy_by_Hon%27ami_K%C5%8Detsu_DP341228.jpg",
+      "tags": ["Medium Duration", "Medium Effort", "Creative"]
+    },
+    {
+      "id": "Message Style",
+      "description": "Choose a style. Next few messages have to adhere to that theme. Examples: old-fashined, silly, random",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/7/78/Camp_-_Notes_on_Fashion_at_the_Met_%2873884%29.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Silly"]
+    },
+    {
+      "id": "Culture Exploration",
+      "description": "Choose a topic. Exchange what is interesting about your country or region in relation to that. Examples of topics: habits, specifics, language, monuments, history, nature, landmarks, famous people, cuisine",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Person_holding_world_globe.jpg",
+      "tags": ["Medium Duration", "Talk"]
+    },
+    {
+      "id": "Voice Call",
+      "description": "Call with voice through Discord",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Mobile_phone_PHS_Japan_1997-2003.jpg",
+      "tags": ["Talk", "Prying"]
+    },
+    {
+      "id": "Reading Circle",
+      "description": "One person suggests what kind of media to choose - which genre and what kind of media. Another person chooses a specific title. Read it and discuss it later. Example genres: thriller, mystery, historical, comedy. Example content: book, blog post, article, manga, song.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Latin_dictionary.jpg",
+      "tags": ["Medium Duration", "Medium Effort"]
+    },
+    {
+      "id": "Profile Exploration",
+      "description": "If you subscribe to interesting profiles on some platform, share them to other person. It can be a platform such as Substack, or other.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/7/74/Social_media_collection_2020s.png",
+      "tags": ["Medium Duration", "Medium Effort"]
+    },
+    {
+      "id": "Themed Compliment",
+      "description": "Choose a theme. Then you have to exchange compliments, but themed around that topic. It is OK if they are cringe. Example: theme of stars and astronomy, 'your positivity and brigthness glisten like a supernova'",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Mg%C5%82a_nad_Wis%C5%82%C4%85_pod_Ty%C5%84cem_w_Krakowie%2C_20220902_1493.jpg",
+      "tags": ["Quick", "Talk", "Silly"]
+    },
+    {
+      "id": "Mini TED Talk",
+      "description": "One person takes short time to explain a weird or interesting topic as if giving a TED Talk, then the other asks a 'clarifying question'. Switch. Example topic: internet culture of 2020s",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/a/a2/TED_Talk_Santa_Barbara%2C_CA.jpg",
+      "tags": ["Medium Duration", "Medium Effort", "Talk", "Creative", "Silly"]
+    },
+    {
+      "id": "Six Handshakes",
+      "description": "Choose a starting and ending entity. Example: cactus, bomb. Then you have to connect them using 6 or less steps 'is related to'.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Six_degrees_of_separation_diagram.png",
+      "tags": ["Medium Duration", "Medium Effort", "Talk", "Silly"]
+    },
+    {
+      "id": "Speed Pros and Cons",
+      "description": "One person chooses a topic. Example: 'should schools have uniforms'. The other gives 3 fast pros and 3 fast cons. They have to be written as first thought. Then try again and swap roles.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/d/d6/US-Sundsvall_Pros_and_Cons_%286196738791%29.jpg",
+      "tags": ["Quick", "Lazy", "Talk"]
+    },
+    {
+      "id": "Confessional",
+      "description": "Each person has to admit something embarrassing. Examples: a guilty pleasure, unpopular opinion, awkward moment, silly habit. The other responds by admitting to something that is connected to that in some way. Keep it light and judgment-free.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Trier%2C_07-12-2023_%28actm.%29_37.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Prying"]
+    },
+    {
+      "id": "Writing Prompt",
+      "description": "Ask LLM for elements of a story. It would be better if they were somehow random. Example: tropical island, vines, horror. Then, write quickly a short story for few sentences using these elements.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Fountain_pen_writing_%28literacy%29.jpg",
+      "tags": ["Medium Duration", "Medium Effort", "Creative"]
+    },
+    {
+      "id": "Rapid-Fire Association",
+      "description": "One person says a word, the other responds with the first word that comes to mind. Continue back-and-forth for 10-20 exchanges. Then analyze the chain to see what patterns or unexpected connections emerged.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/8/8d/Breil-Brigels._24-09-2025._%28actm.%29_19.jpg",
+      "tags": ["Quick", "Lazy", "Talk"]
+    },
+    {
+      "id": "Desert Island Choices",
+      "description": "One person presents increasingly difficult 'choose one or lose it forever' scenarios. Example: books, foods, abilities, memories. The other must decide and briefly explain why. Take turns being the questioner.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/9/93/Mborokua_Island_%28Landsat%29.jpg",
+      "tags": ["Quick", "Medium Effort", "Talk"]
+    },
+    {
+      "id": "Describe It Badly",
+      "description": "One person gives a description of something, but purposefully awful. Other person tries to guess what it is. Switch.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/8/80/Low_effort_map.png",
+      "tags": ["Quick", "Lazy", "Talk", "Creative", "Silly"]
+    },
+    {
+      "id": "Would You Survive?",
+      "description": "Take turns posing scenarios. Each person has to say whether they would survive them, and why.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/2/28/Hyakki_Yako.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Silly"]
+    },
+    {
+      "id": "Invent a Meme",
+      "description": "Open an AI image generator. One person generates background image, another generates a caption.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Example_of_modern_internet_meme_japanese_version.png",
+      "tags": ["Medium Duration", "Medium Effort", "Creative", "Silly"]
+    },
+    {
+      "id": "Dream Decoder",
+      "description": "Share a recent dream, and decode it with help of another person.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/7/74/Visionart_Art_Dream_Dream_Away_by_Soriano.png",
+      "tags": ["Quick", "Lazy", "Talk", "Silly", "Deep"]
+    },
+    {
+      "id": "Are We Cringe Yet?",
+      "description": "Describe something cringe and shameful that you do. Another person comments whether it is really bad or not. Switch.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/4/43/2006-01-14_Surface_waves.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Silly"]
+    },
+    {
+      "id": "What If?",
+      "description": "Pose a hypothetical, and each person elaborates on the consequences. Examples: 'What if cats could talk?' 'What if anime was real?' 'What if you could rewind time?'",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/3/30/Riemann_Hypothesis_Solution.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Silly"]
+    },
+    {
+      "id": "Wishing Well",
+      "description": "If you could make 3 things become true, which things would you choose?",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/b/b1/%22Magic_Lamps%22_in_Cairo%2C_Egypt.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Silly"]
+    },
+    {
+      "id": "Peaceful Place Tour",
+      "description": "Describe a real or imaginary place where you feel calm and safe. Paint a picture with words, the sounds, smells, textures. Let the other person ask questions to explore it before falling asleep.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Baumsilhouetten_am_Uetliberg_mit_Novembernebel_und_Sonnenstrahlen.jpg",
+      "tags": ["Medium Duration", "Lazy", "Talk", "Tired"]
+    },
+    {
+      "id": "Light Gratitude",
+      "description": "Each person names 3 things they appreciate right now, then briefly explains why.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/d/d6/D%C3%BClmen%2C_Hausd%C3%BClmen%2C_Sonnenaufgang_--_2015_--_4952.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Tired", "Deep"]
+    },
+    {
+      "id": "Sleepy Favorites",
+      "description": "Take turns naming favorite sleepy things, like pajamas, blankets, nighttime sounds, or pre-sleep rituals.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Sleeping_Cat_on_lap.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Tired", "Silly"]
+    },
+    {
+      "id": "Tiny Comfort Hunt",
+      "description": "Find one small comforting object nearby and show or describe it. The other person does the same.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Serving_tea%2C_Turkish_style_II.jpg",
+      "tags": ["Quick", "Lazy", "Active", "Tired", "Silly"]
+    },
+    {
+      "id": "Gentle Daydream",
+      "description": "Close your eyes for a moment and describe a peaceful place you would like to be resting in.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Nelumbo_nucifera_01.JPG",
+      "tags": ["Quick", "Lazy", "Talk", "Tired", "Creative"]
+    },
+    {
+      "id": "Goblin Thoughts",
+      "description": "Say the first chaotic thought that enters your head, then the other person responds with an equally odd one.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/d/de/Fonte_Gaia_-_she_wolf_detail.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Silly"]
+    },
+    {
+      "id": "Accidentally a Menace",
+      "description": "Take turns describing one harmless thing you did that somehow caused chaos, confusion, or social damage.",
+      "backgroundHref": "https://upload.wikimedia.org/wikipedia/commons/0/05/Fierce_Sky_-_geograph.org.uk_-_1624909.jpg",
+      "tags": ["Quick", "Lazy", "Talk", "Silly"]
     }
   ]
 }
