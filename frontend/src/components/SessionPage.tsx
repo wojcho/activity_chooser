@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router";
 import { useBackend } from "../client/BackendContext";
 import type { ApplicationData, RawActivity } from "../model/application-data";
@@ -7,6 +7,7 @@ import WaitingForParticipant from "./WaitingForParticipant";
 import SessionResults from "./SessionResults";
 
 import { Center, Loader } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 
 export default function SessionPage() {
   const { sessionId, userToken } = useParams();
@@ -19,6 +20,8 @@ export default function SessionPage() {
 
   const [selectedTags, setSelectedTags] = useState(new Set<string>());
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const wasNotifiedForAcceptance = useRef(false);
 
   useEffect(() => {
     if (!sessionId) return;
@@ -46,9 +49,34 @@ export default function SessionPage() {
     if (!sessionId) return;
 
     return backend.sessions.subscribe(sessionId, event => {
-      setAcceptedTokens(event.acceptedTokens);
+      setAcceptedTokens(previous => {
+        const previousCount = previous?.length ?? 0;
+        const newCount = event.acceptedTokens.length;
+
+        // Another participant accepted while this user is still choosing tags
+        if (
+          previousCount < newCount &&
+          userToken &&
+          !event.acceptedTokens.includes(userToken) &&
+          !wasNotifiedForAcceptance.current
+        ) {
+          wasNotifiedForAcceptance.current = true;
+
+          notifications.show({
+            title: "Participant joined",
+            message: "The other participant has accepted their tags.",
+            color: "blue",
+          });
+        }
+
+        return event.acceptedTokens;
+      });
     });
-  }, [backend, sessionId]);
+  }, [backend, sessionId, userToken]);
+
+  useEffect(() => {
+    wasNotifiedForAcceptance.current = false;
+  }, [sessionId]);
 
   useEffect(() => {
     if (!sessionId) return;

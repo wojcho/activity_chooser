@@ -37,7 +37,7 @@ export default class SessionsClient extends ApiClient {
   subscribe(
     sessionId: string,
     callback: (event: SessionEvent) => void,
-  ) {
+  ): () => void {
     const source = new EventSource(
       `${this["baseUrl"]}/sessions/${sessionId}/events`,
     );
