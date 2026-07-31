@@ -1,23 +1,24 @@
+import { useNavigate } from "react-router";
 import { useBackend } from "../client/BackendContext";
 
 export default function HomePage() {
   const backend = useBackend();
+  const navigate = useNavigate();
 
-  // TODO create a button which runs that
-  // await backend.sessions.createSession();
-  // then gets output which matches interface CreateSessionResponse
-  // export interface CreateSessionResponse {
-  //   sessionId: string;
-  //   aToken: string;
-  //   bToken: string;
-  // }
-  // then redirect using React Router to
-  // /new-session/:sessionId/:aUserToken/:bUserToken
+  const handleCreateSession = async () => {
+    const { sessionId, aToken, bToken } = await backend.sessions.createSession();
+
+    navigate(`/new-session/${sessionId}/${aToken}/${bToken}`);
+  };
 
   return (
     <section id="center">
       <h1>Main page</h1>
       <p>Welcome!</p>
+
+      <button onClick={handleCreateSession}>
+        Create New Session
+      </button>
     </section>
   );
 }
