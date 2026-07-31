@@ -1,10 +1,8 @@
 import type TagCategory from "./tag-category";
 
-interface Tag {
+export default interface Tag {
   id: string;
   description: string;
   iconId: string;
   category: TagCategory;
 }
-
-export default Tag;

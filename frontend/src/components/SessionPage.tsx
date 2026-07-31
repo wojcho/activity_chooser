@@ -15,10 +15,10 @@ export default function SessionPage() {
   const { sessionId, userToken } = useParams();
   const backend = useBackend();
 
-  const [applicationData, setApplicationData] = useState<ApplicationData>();
-  const [acceptedTokens, setAcceptedTokens] = useState<string[]>();
-  const [filteredActivities, setFilteredActivities] = useState<Actvity[] | null>();
-  const [chosenActivity, setChosenActivity] = useState<Actvity | null>();
+  const [applicationData, setApplicationData] = useState<ApplicationData | undefined>();
+  const [acceptedTokens, setAcceptedTokens] = useState<string[] | undefined>();
+  const [filteredActivities, setFilteredActivities] = useState<Actvity[] | null>(null);
+  const [chosenActivity, setChosenActivity] = useState<Actvity | null>(null);
 
   const [selectedTags, setSelectedTags] = useState(new Set<string>());
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,12 +27,12 @@ export default function SessionPage() {
 
   function setActivitiesUsingRawAndTags(sessionResponse: SessionResponse, applicationData: ApplicationData): void {
     const tagsArray = Array.from(applicationData.tags);
-    const rawFilteredActivities: RawActivity[] = sessionResponse.filteredActivities;
+    const rawFilteredActivities: RawActivity[] | null = sessionResponse.filteredActivities;
     if (rawFilteredActivities) {
       const fullFilteredActivities: Actvity[] = rawActivitiesToActivities(rawFilteredActivities, tagsArray);
       setFilteredActivities(fullFilteredActivities);
     }
-    const rawChosenActivity: RawActivity = sessionResponse.chosenActivity;
+    const rawChosenActivity: RawActivity | null = sessionResponse.chosenActivity;
     if (rawChosenActivity) {
       const fullChosenActivity: Actvity = rawActivitiesToActivities([rawChosenActivity], tagsArray)[0];
       setChosenActivity(fullChosenActivity);
@@ -42,11 +42,13 @@ export default function SessionPage() {
   useEffect(() => {
     if (!sessionId) return;
 
+    const sId = sessionId;
+
     async function load() {
       try {
         const [applicationData, sessionResponse] = await Promise.all([
           backend.raw.getRawData(),
-          backend.sessions.getSession(sessionId),
+          backend.sessions.getSession(sId),
         ]);
 
         setApplicationData(applicationData);
@@ -98,6 +100,8 @@ export default function SessionPage() {
     if (acceptedTokens?.length !== 2) return;
 
     async function loadResults() {
+      if (!applicationData) return;
+      if (!sessionId) return;
       try {
         const sessionResponse = await backend.sessions.getSession(sessionId);
         setActivitiesUsingRawAndTags(sessionResponse, applicationData);
@@ -125,6 +129,7 @@ export default function SessionPage() {
 
       const sessionResponse = await backend.sessions.getSession(sessionId);
 
+      if (!applicationData) return;
       setActivitiesUsingRawAndTags(sessionResponse, applicationData);
     } catch (err) {
       console.error(err);
