@@ -9,11 +9,11 @@ import {
   Title,
 } from "@mantine/core";
 import { CheckIcon, ConfettiIcon } from "@phosphor-icons/react";
-import type { RawActivity } from "../model/application-data";
+import type Actvity from "../model/activity";
 
 type Props = {
-  filteredActivities: RawActivity[] | null | undefined;
-  chosenActivity: RawActivity | null | undefined;
+  filteredActivities: Actvity[] | null;
+  chosenActivity: Actvity | null;
 };
 
 export default function SessionResults({

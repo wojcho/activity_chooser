@@ -1,13 +1,15 @@
 import { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router";
+import { useParams, type Session } from "react-router";
 import { useBackend } from "../client/BackendContext";
-import type { ApplicationData, RawActivity } from "../model/application-data";
+import { rawActivitiesToActivities, type ApplicationData, type RawActivity } from "../model/application-data";
 import TagSelection from "./TagSelection";
 import WaitingForParticipant from "./WaitingForParticipant";
 import SessionResults from "./SessionResults";
 
 import { Center, Loader } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
+import type Actvity from "../model/activity";
+import type { SessionResponse } from "../client/responses";
 
 export default function SessionPage() {
   const { sessionId, userToken } = useParams();
@@ -15,28 +17,37 @@ export default function SessionPage() {
 
   const [applicationData, setApplicationData] = useState<ApplicationData>();
   const [acceptedTokens, setAcceptedTokens] = useState<string[]>();
-  const [filteredActivities, setFilteredActivities] = useState<RawActivity[] | null>();
-  const [chosenActivity, setChosenActivity] = useState<RawActivity | null>();
+  const [filteredActivities, setFilteredActivities] = useState<Actvity[] | null>();
+  const [chosenActivity, setChosenActivity] = useState<Actvity | null>();
 
   const [selectedTags, setSelectedTags] = useState(new Set<string>());
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const wasNotifiedForAcceptance = useRef(false);
 
+  function setActivitiesUsingRawAndTags(sessionResponse: SessionResponse, applicationData: ApplicationData): void {
+    const tagsArray = Array.from(applicationData.tags);
+    const rawFilteredActivities: RawActivity[] = sessionResponse.filteredActivities;
+    const fullFilteredActivities: Actvity[] = rawActivitiesToActivities(rawFilteredActivities, tagsArray);
+    setFilteredActivities(fullFilteredActivities);
+    const rawChosenActivity: RawActivity = sessionResponse.chosenActivity;
+    const fullChosenActivity: Actvity = rawActivitiesToActivities([rawChosenActivity], tagsArray)[0];
+    setChosenActivity(fullChosenActivity);
+  }
+
   useEffect(() => {
     if (!sessionId) return;
 
     async function load() {
       try {
-        const [applicationData, session] = await Promise.all([
+        const [applicationData, sessionResponse] = await Promise.all([
           backend.raw.getRawData(),
           backend.sessions.getSession(sessionId),
         ]);
 
         setApplicationData(applicationData);
-        setAcceptedTokens(session.acceptedTokens);
-        setFilteredActivities(session.filteredActivities);
-        setChosenActivity(session.chosenActivity);
+        setAcceptedTokens(sessionResponse.acceptedTokens);
+        setActivitiesUsingRawAndTags(sessionResponse, applicationData);
       } catch (err) {
         console.error(err);
       }
@@ -84,10 +95,8 @@ export default function SessionPage() {
 
     async function loadResults() {
       try {
-        const session = await backend.sessions.getSession(sessionId);
-
-        setFilteredActivities(session.filteredActivities);
-        setChosenActivity(session.chosenActivity);
+        const sessionResponse = await backend.sessions.getSession(sessionId);
+        setActivitiesUsingRawAndTags(sessionResponse, applicationData);
       } catch (err) {
         console.error(err);
       }
@@ -110,10 +119,9 @@ export default function SessionPage() {
 
       setAcceptedTokens(response.acceptedTokens);
 
-      const session = await backend.sessions.getSession(sessionId);
+      const sessionResponse = await backend.sessions.getSession(sessionId);
 
-      setFilteredActivities(session.filteredActivities);
-      setChosenActivity(session.chosenActivity);
+      setActivitiesUsingRawAndTags(sessionResponse, applicationData);
     } catch (err) {
       console.error(err);
     } finally {
