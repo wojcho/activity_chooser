@@ -1,21 +1,14 @@
-import { useState } from "react";
+import { Route, Routes } from "react-router";
+import HomePage from "./components/HomePage";
+import SessionPage from "./components/SessionPage";
+import NotFoundPage from "./components/NotFoundPage";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+export default function App() {
   return (
-    <>
-      <section id="center">
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-    </>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/session/:sessionId/:userToken" element={<SessionPage />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }
-
-export default App;
