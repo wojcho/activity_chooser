@@ -1,7 +1,8 @@
 import { useParams } from "react-router";
 import { useBackend } from "../client/BackendContext";
 import { useState } from "react";
-import type { ApplicationData } from "../model/application-data";
+import type { ApplicationData, RawActivity } from "../model/application-data";
+import type { SessionState } from "../model/session-state";
 
 export default function SessionPage() {
   const { sessionId, userToken } = useParams();
@@ -11,6 +12,17 @@ export default function SessionPage() {
   const [sessionState, setSessionState] = useState<SessionState>();
   const [filteredActivities, setFilteredActivities] = useState<RawActivity[] | null>();
   const [chosenActivity, setChosenActivity] = useState<RawActivity | null>();
+
+  // TODO
+  // At the beginning when component loads:
+  // fetch applicationData by using await backend.raw.getRawData()
+  // and
+  // fetch session state by using await backend.sessions.getSession(sessionId)
+  // export interface SessionResponse {
+  //   state: SessionState;
+  //   filteredActivities: RawActivity[] | null;
+  //   chosenActivity: RawActivity | null;
+  // }
 
   return (
     <section id="center">
