@@ -1,5 +1,4 @@
 import type { RawActivity } from "../model/application-data";
-import { SessionState } from "../model/session-state";
 
 export interface CreateSessionResponse {
   sessionId: string;
@@ -8,17 +7,17 @@ export interface CreateSessionResponse {
 }
 
 export interface AcceptResponse {
-  state: SessionState;
+  acceptedTokens: string[];
 }
 
 export interface SessionResponse {
-  state: SessionState;
+  acceptedTokens: string[];
   filteredActivities: RawActivity[] | null;
   chosenActivity: RawActivity | null;
 }
 
 export interface SessionEvent {
-  state: SessionState;
+  acceptedTokens: string[];
 }
 
 export type ApiErrorResponse = {

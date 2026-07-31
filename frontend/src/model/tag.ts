@@ -1,4 +1,4 @@
-import TagCategory from "./tag-category";
+import type TagCategory from "./tag-category";
 
 interface Tag {
   id: string;

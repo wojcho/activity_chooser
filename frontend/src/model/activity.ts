@@ -1,4 +1,4 @@
-import Tag from "./tag";
+import type Tag from "./tag";
 
 interface Actvity {
   id: string;
