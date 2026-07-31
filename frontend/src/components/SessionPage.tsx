@@ -78,9 +78,9 @@ export default function SessionPage() {
           wasNotifiedForAcceptance.current = true;
 
           notifications.show({
-            title: "Participant joined",
-            message: "The other participant has accepted their tags.",
-            color: "blue",
+            title: "Other person accepted",
+            message: "The other participant has now confirmed their choices",
+            color: "cyan",
           });
         }
 

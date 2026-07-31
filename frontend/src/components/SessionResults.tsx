@@ -46,10 +46,22 @@ function ActivityCard({
         borderWidth: highlighted ? 3 : 1,
       }}
     >
-      <Overlay
-        color="black"
-        opacity={0.55}
-        zIndex={0}
+      <Overlay color="black" opacity={0.45} zIndex={0} />
+      <Box
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+          background: `
+            radial-gradient(
+              circle at center,
+              transparent 45%,
+              rgba(0, 0, 0, 0.25) 70%,
+              rgba(0, 0, 0, 0.6) 100%
+            )
+          `,
+        }}
       />
 
       {highlighted && (
@@ -62,7 +74,7 @@ function ActivityCard({
             padding: "6px 14px",
             borderRadius: 999,
             border: "2px solid var(--mantine-color-teal-4)",
-            backgroundColor: "rgba(0, 150, 136, 0.25)",
+            backgroundColor: "var(--mantine-color-teal-9)",
           }}
         >
           <Group gap="xs">

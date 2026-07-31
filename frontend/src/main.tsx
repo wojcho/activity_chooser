@@ -8,6 +8,7 @@ import { BackendProvider } from "./client/BackendContext.tsx";
 import { createTheme, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { Notifications } from "@mantine/notifications";
+import "@mantine/notifications/styles.css";
 
 const theme = createTheme({
   primaryColor: "cyan",
